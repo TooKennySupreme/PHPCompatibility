@@ -14,6 +14,7 @@ use PHP_CodeSniffer\Exceptions\RuntimeException;
 use PHP_CodeSniffer\Files\File;
 use PHP_CodeSniffer\Util\Tokens;
 use PHPCSUtils\Utils\Arrays;
+use PHPCSUtils\Utils\GetTokensAsString;
 use PHPCSUtils\Utils\PassedParameters;
 use PHPCSUtils\Utils\TextStrings;
 
@@ -102,9 +103,10 @@ trait PCRERegexTrait
                     continue;
                 }
 
-                $itemInfo['end'] = ($hasKey - 1);
-                $itemInfo['raw'] = \trim($phpcsFile->getTokensAsString($itemInfo['start'], ($hasKey - $itemInfo['start'])));
-                $patterns[]      = $itemInfo;
+                $itemInfo['end']   = ($hasKey - 1);
+                $itemInfo['raw']   = \trim(GetTokensAsString::normal($phpcsFile, $itemInfo['start'], $itemInfo['end']));
+                $itemInfo['clean'] = \trim(GetTokensAsString::compact($phpcsFile, $itemInfo['start'], $itemInfo['end'], true));
+                $patterns[]        = $itemInfo;
             }
 
             return $patterns;
@@ -116,7 +118,8 @@ trait PCRERegexTrait
             if ($hasKey !== false) {
                 // Param info array only needs adjusting if this was a keyed array item.
                 $itemInfo['start'] = ($hasKey + 1);
-                $itemInfo['raw']   = \trim($phpcsFile->getTokensAsString($itemInfo['start'], (($itemInfo['end'] + 1) - $itemInfo['start'])));
+                $itemInfo['raw']   = \trim(GetTokensAsString::normal($phpcsFile, $itemInfo['start'], $itemInfo['end']));
+                $itemInfo['clean'] = \trim(GetTokensAsString::compact($phpcsFile, $itemInfo['start'], $itemInfo['end'], true));
             }
 
             $patterns[] = $itemInfo;
