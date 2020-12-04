@@ -135,6 +135,11 @@ jobs:
       env: PHPCS_VERSION=">=2.6,<3.0" LINT=1
     - php: 7.4
       env: PHPCS_VERSION="2.6.0"
+    # Note: PHP 8.0+ is only supported icw PHPCS 3.5.7+.
+    - php: 8.0
+      env: PHPCS_VERSION="dev-master" LINT=1
+    - php: 8.0
+      env: PHPCS_VERSION="3.5.7"
 
     # And start testing against the upcoming PHPCS 4.x release.
     - php: 7.4
@@ -209,12 +214,11 @@ before_install:
     fi
   # --prefer-dist will allow for optimal use of the travis caching ability.
   - |
-    if [[ $TRAVIS_PHP_VERSION == "nightly" ]]; then
+    if [[ $TRAVIS_PHP_VERSION == "nightly" || $TRAVIS_PHP_VERSION == "8.0" ]]; then
       # Temporary fix - PHPUnit 9.3 is buggy when used for code coverage, so not allowed "normally".
       # As PHP 8 doesn't run code coverage, we can safely install it there though.
       travis_retry composer require --no-update phpunit/phpunit:"^9.3"
-      # Not all PHPUnit dependencies have stable releases yet allowing for PHP 8.0.
-      travis_retry composer install --prefer-dist --no-suggest --ignore-platform-reqs
+      travis_retry composer install --prefer-dist --no-suggest
     else
       # Remove devtools as it would block install on old PHPCS versions (< 3.0).
       travis_retry composer remove --dev phpcsstandards/phpcsdevtools --no-update

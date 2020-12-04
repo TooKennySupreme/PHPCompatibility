@@ -52,6 +52,7 @@ PHP_CodeSniffer < 2.9.2/3.3.1 is not fully compatible with PHP 7.3, which effect
 While the sniffs will still work in _most_ cases, you can expect PHP warnings to be thrown.
 
 For running the sniffs on PHP 7.4, it is recommended to use PHP_CodeSniffer 3.5.0+ for the same reasons.
+And as for PHP 8.0, the minimum PHPCS version which has runtime support for PHP 8.0 is PHP_CodeSniffer 3.5.7.
 
 As of version 8.0.0, the PHPCompatibility standard can also be used with PHP CodeSniffer 3.x.
 As of version 9.0.0, support for PHP CodeSniffer 1.5.x and low 2.x versions < 2.3.0 has been dropped.
